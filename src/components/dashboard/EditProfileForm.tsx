@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image"; // Add Next.js Image import
 import Button from "../ui/Button";
 
 interface EditProfileFormProps {
@@ -73,11 +74,14 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({
         <div className="relative">
           <div className="w-24 h-24 bg-gray-700 rounded-full overflow-hidden">
             {profileImage ? (
-              <img
-                src={profileImage}
-                alt="Profile"
-                className="w-full h-full object-cover"
-              />
+              <div className="relative w-full h-full">
+                <Image
+                  src={profileImage}
+                  alt="Profile"
+                  fill
+                  className="object-cover"
+                />
+              </div>
             ) : (
               <div className="w-full h-full bg-gray-700"></div>
             )}

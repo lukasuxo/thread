@@ -14,6 +14,12 @@ export interface Comment {
   timestamp: string;
 }
 
+export interface AuthUser {
+  displayName?: string | null;
+  email: string;
+  photoURL?: string | null;
+}
+
 export interface Post {
   id: number;
   username: string;

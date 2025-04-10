@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import ThreadsAuthSystem from "../components/auth";
 import ThreadsDashboard from "../components/dashboard";
 import { User } from "../components/types";
+import { User as FirebaseUser } from "firebase/auth";
 
 export default function Home() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -16,14 +17,18 @@ export default function Home() {
     }
   }, []);
 
-  const handleLogin = (user: any) => {
-    const userWithId = {
-      ...user,
+  const handleLogin = (user: FirebaseUser) => {
+    // Extract email carefully from the FirebaseUser object
+    const email = user.email || "";
+    
+    // Create the User object with required fields
+    const userWithId: User = {
       id: Date.now(),
-      username: user.displayName || user.email?.split("@")[0] || "User",
-      email: user.email,
-      profileImage: user.photoURL || null,
+      username: user.displayName || email.split("@")[0] || "User",
+      email: email, // email is required and can't be null in your User type
+      profileImage: user.photoURL
     };
+    
     setCurrentUser(userWithId);
     setIsAuthenticated(true);
     localStorage.setItem("currentUser", JSON.stringify(userWithId));

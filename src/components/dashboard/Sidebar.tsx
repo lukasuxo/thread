@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Heart, LucideIcon, LucideProps } from "lucide-react"; // Import LucideProps
 import { ActiveTab } from "../../components/types";
 
 interface SidebarProps {
@@ -10,13 +10,20 @@ interface SidebarProps {
   threadsLogo: string;
 }
 
+// Define a union type for icon components
+type IconComponent = React.FC | LucideIcon;
+
+interface SidebarMenuItem {
+  icon: IconComponent;
+  name: ActiveTab;
+}
+
 const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
   setActiveTab,
   onCreatePost,
-  threadsLogo,
 }) => {
-  const HomeSvg = () => (
+  const HomeSvg: React.FC = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 576 512"
@@ -28,7 +35,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     </svg>
   );
 
-  const SearchSvg = () => (
+  const SearchSvg: React.FC = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512"
@@ -40,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     </svg>
   );
 
-  const PlusSvg = () => (
+  const PlusSvg: React.FC = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 448 512"
@@ -52,7 +59,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     </svg>
   );
 
-  const ProfileSvg = () => (
+  const ProfileSvg: React.FC = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 448 512"
@@ -64,12 +71,12 @@ const Sidebar: React.FC<SidebarProps> = ({
     </svg>
   );
 
-  const sidebarMenuItems = [
-    { icon: HomeSvg, name: "home" as ActiveTab },
-    { icon: SearchSvg, name: "search" as ActiveTab },
-    { icon: PlusSvg, name: "create" as ActiveTab },
-    { icon: Heart, name: "activity" as ActiveTab },
-    { icon: ProfileSvg, name: "profile" as ActiveTab },
+  const sidebarMenuItems: SidebarMenuItem[] = [
+    { icon: HomeSvg, name: "home" },
+    { icon: SearchSvg, name: "search" },
+    { icon: PlusSvg, name: "create" },
+    { icon: Heart, name: "activity" },
+    { icon: ProfileSvg, name: "profile" },
   ];
 
   return (
@@ -104,11 +111,12 @@ const Sidebar: React.FC<SidebarProps> = ({
               : "text-gray-500 hover:text-white"
           }`}
         >
-          {typeof item.icon === "function" ? (
-            <item.icon />
-          ) : (
-            <item.icon size={24} />
-          )}
+          {React.isValidElement(item.icon)
+            ? item.icon
+            : React.createElement(
+                item.icon as React.ComponentType<LucideProps>,
+                { size: 24 }
+              )}
         </motion.button>
       ))}
     </div>

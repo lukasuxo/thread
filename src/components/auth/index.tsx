@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { ThreadsAuthSystemProps, Language, ActiveScreen } from "../../components/types";
-import { FirebaseError } from "firebase/app";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";

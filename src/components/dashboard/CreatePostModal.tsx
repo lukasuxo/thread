@@ -1,7 +1,9 @@
+"use client";
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import Button from "../ui/Button";
+import Image from "next/image";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -30,7 +32,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
   const handleImageSelected = (file: File) => {
     const reader = new FileReader();
-    reader.onload = (event: ProgressEvent) => {
+    reader.onload = (event: ProgressEvent<FileReader>) => {
       if (event.target?.result) {
         setNewPostImage(event.target.result as string);
       }
@@ -71,10 +73,13 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
         <div className="flex items-center mb-3">
           {profileImage ? (
-            <img
+            <Image
               src={profileImage}
               alt="Profile"
+              width={40}
+              height={40}
               className="w-10 h-10 rounded-full object-cover"
+              unoptimized
             />
           ) : (
             <div className="w-10 h-10 rounded-full bg-gray-300" />
@@ -97,15 +102,20 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-full h-24 overflow-hidden cursor-pointer shadow-xl hover:shadow-2xl transition-shadow duration-300"
+              className="w-full h-24 overflow-hidden cursor-pointer shadow-xl hover:shadow-2xl transition-shadow duration-300 relative"
             >
-              <img
+              <Image
                 src={newPostImage}
                 alt="Preview"
+                fill
                 className="object-cover w-full h-full"
+                unoptimized
               />
               <button
-                onClick={() => setNewPostImage(null)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setNewPostImage(null);
+                }}
                 className="absolute top-0 right-0 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-75"
               >
                 <X size={15} />

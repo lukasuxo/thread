@@ -2,7 +2,9 @@ import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import { Mail, ChevronRight, X } from "lucide-react";
 
-const getTranslation = (language: string) => {
+type SupportedLanguage = "en";
+
+const getTranslation = (language: SupportedLanguage) => {
   const translations = {
     en: {
       resetPasswordTitle: "Reset Password",
@@ -13,7 +15,7 @@ const getTranslation = (language: string) => {
     },
   };
 
-  return translations[language] || translations.en;
+  return translations[language];
 };
 
 interface ForgotPasswordFormProps {
@@ -22,7 +24,7 @@ interface ForgotPasswordFormProps {
   handlePasswordReset: (e: React.FormEvent) => void;
   errors: Record<string, string>;
   passwordResetSent: boolean;
-  language: string; 
+  language: string; // This stays as string in the interface
   switchToLogin: () => void;
 }
 
@@ -35,7 +37,10 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   language,
   switchToLogin,
 }) => {
-  const t = getTranslation(language);
+  // Cast language to SupportedLanguage or use "en" as fallback
+  const safeLanguage: SupportedLanguage =
+    (language as SupportedLanguage) || "en";
+  const t = getTranslation(safeLanguage);
   const emailInputRef = useRef<HTMLInputElement>(null);
 
   return (

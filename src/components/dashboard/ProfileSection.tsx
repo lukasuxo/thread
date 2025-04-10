@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image"; // Add Next.js Image import
 import { LogOut } from "lucide-react";
 import Button from "../ui/Button";
 import EditProfileForm from "./EditProfileForm";
@@ -40,11 +41,14 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             </div>
             <div className="w-16 h-16 bg-gray-700 rounded-full overflow-hidden">
               {profileImage ? (
-                <img
-                  src={profileImage}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src={profileImage}
+                    alt="Profile"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
               ) : (
                 <div className="w-full h-full bg-gray-700"></div>
               )}

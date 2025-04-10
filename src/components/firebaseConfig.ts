@@ -1,5 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -23,11 +22,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-let analytics;
+// let analytics;
 
-if (typeof window !== "undefined") {
-  analytics = getAnalytics(app);
-}
+// if (typeof window !== "undefined") {
+//   analytics = getAnalytics(app);
+// }
 
 export const registerUser = async (
   email: string,

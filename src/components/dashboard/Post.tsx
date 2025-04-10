@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import {
   Heart,
@@ -11,6 +11,7 @@ import {
 import { Post as PostType } from "../../components/types";
 import PostMenu from "../ui/PostMenu";
 import Button from "../ui/Button";
+import Image from "next/image";
 
 interface PostProps {
   post: PostType;
@@ -70,10 +71,13 @@ const Post: React.FC<PostProps> = ({
             <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full p-0.5">
               <div className="w-full h-full bg-black rounded-full overflow-hidden">
                 {profileImage && (
-                  <img
+                  <Image
                     src={profileImage}
                     alt="Profile"
-                    className="w-full h-full object-cover"
+                    width={40}
+                    height={40}
+                    className="object-cover w-full h-full"
+                    unoptimized
                   />
                 )}
               </div>
@@ -103,10 +107,13 @@ const Post: React.FC<PostProps> = ({
 
             {post.image && (
               <div className="mt-3 relative rounded-xl overflow-hidden">
-                <img
+                <Image
                   src={post.image}
                   alt="Post"
+                  width={600}
+                  height={400}
                   className="w-full max-h-96 object-cover opacity-60"
+                  unoptimized
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="bg-black/75 text-white text-sm px-3 py-1 rounded-full">
@@ -140,10 +147,13 @@ const Post: React.FC<PostProps> = ({
         <div className="mr-3">
           <div className="w-10 h-10 bg-gray-700 rounded-full overflow-hidden">
             {profileImage ? (
-              <img
+              <Image
                 src={profileImage}
                 alt="Profile"
-                className="w-full h-full object-cover"
+                width={40}
+                height={40}
+                className="object-cover w-full h-full"
+                unoptimized
               />
             ) : (
               <div className="w-full h-full bg-gray-700"></div>
@@ -201,10 +211,13 @@ const Post: React.FC<PostProps> = ({
 
           {post.image && (
             <div className="mt-3 rounded-xl overflow-hidden">
-              <img
+              <Image
                 src={post.image}
                 alt="Post"
+                width={600}
+                height={400}
                 className="w-full max-h-96 object-cover"
+                unoptimized
               />
             </div>
           )}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image"; // Add Next.js Image import
 import {
   ThreadsDashboardProps,
   ActiveTab,
@@ -39,17 +40,13 @@ const ThreadsDashboard: React.FC<ThreadsDashboardProps> = ({
     showPostMenu,
     editingPost,
     editPostContent,
-    editPostImage,
     newPostContent,
     newPostImage,
     commentContent,
-    setPosts,
     setSelectedPost,
     setShowComments,
     setShowPostMenu,
-    setEditingPost,
     setEditPostContent,
-    setEditPostImage,
     setNewPostContent,
     setNewPostImage,
     setCommentContent,
@@ -60,7 +57,6 @@ const ThreadsDashboard: React.FC<ThreadsDashboardProps> = ({
     handleStartEditPost,
     handleSaveEditPost,
     handleCancelEditPost,
-    handlePostImageUpload,
   } = usePosts(userName, userHandle);
 
   useEffect(() => {
@@ -121,7 +117,7 @@ const ThreadsDashboard: React.FC<ThreadsDashboardProps> = ({
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [setShowPostMenu]); // Added the missing dependency
 
   useEffect(() => {
     return () => {
@@ -250,11 +246,14 @@ const ThreadsDashboard: React.FC<ThreadsDashboardProps> = ({
             <div className="flex items-start space-x-3">
               <div className="w-10 h-10 bg-gray-700 rounded-full overflow-hidden">
                 {profileImage ? (
-                  <img
-                    src={profileImage}
-                    alt="Profile"
-                    className="w-full h-full object-cover"
-                  />
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={profileImage}
+                      alt="Profile"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
                 ) : (
                   <div className="w-full h-full bg-gray-700"></div>
                 )}
@@ -269,11 +268,14 @@ const ThreadsDashboard: React.FC<ThreadsDashboardProps> = ({
 
                 {newPostImage && (
                   <div className="mt-2 relative">
-                    <img
-                      src={newPostImage}
-                      alt="Post preview"
-                      className="w-full max-h-60 object-cover rounded-lg"
-                    />
+                    <div className="relative w-full h-60">
+                      <Image
+                        src={newPostImage}
+                        alt="Post preview"
+                        fill
+                        className="object-cover rounded-lg"
+                      />
+                    </div>
                     <button
                       className="absolute top-2 right-2 bg-black bg-opacity-50 rounded-full p-1"
                       onClick={() => setNewPostImage(null)}

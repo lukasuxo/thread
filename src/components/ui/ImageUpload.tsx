@@ -1,7 +1,8 @@
-import React, { useRef, useState } from "react";
+/* eslint-disable @next/next/no-img-element */
+import React, { useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Image, Camera, X } from "lucide-react";
-import Button from "./Button";
+import { Image as ImageIcon, Camera, X } from "lucide-react";
+import NextImage from "next/image";
 
 interface ImageUploadProps {
   onImageSelected: (file: File) => void;
@@ -16,7 +17,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   currentImage,
   onRemoveImage,
   showMenu = false,
-  setShowMenu
+  setShowMenu,
 }) => {
   const imageInputRef = useRef<HTMLInputElement>(null);
 
@@ -63,7 +64,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   return (
     <div className="relative">
       <label className="cursor-pointer text-gray-400 hover:text-white inline-flex">
-        <Image size={20} onClick={handleImageUploadClick} />
+        <ImageIcon size={20} onClick={handleImageUploadClick} />
         <input
           ref={imageInputRef}
           type="file"
@@ -92,7 +93,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               onClick={openGalleryForImage}
               className="flex items-center w-full p-2 text-white hover:bg-gray-700 rounded-lg"
             >
-              <Image size={18} className="mr-2" />
+              <ImageIcon size={18} className="mr-2" />
               <span>Choose from gallery</span>
             </button>
           </motion.div>
@@ -101,11 +102,23 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
       {currentImage && (
         <div className="mt-2 relative">
-          <img
-            src={currentImage}
-            alt="Preview"
-            className="w-full max-h-60 object-cover rounded-lg"
-          />
+          {currentImage.startsWith("blob:") ||
+          currentImage.startsWith("data:") ? (
+            // Fallback to <img> if it's a local blob or data URL
+            <img
+              src={currentImage}
+              alt="Image preview"
+              className="w-full max-h-60 object-cover rounded-lg"
+            />
+          ) : (
+            <NextImage
+              src={currentImage}
+              alt="Image preview"
+              width={500}
+              height={300}
+              className="rounded-lg object-cover w-full max-h-60"
+            />
+          )}
           {onRemoveImage && (
             <button
               onClick={onRemoveImage}
